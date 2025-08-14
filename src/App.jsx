@@ -42,6 +42,13 @@ function App() {
     fetch_data();
   }, []);
 
+  const handleItemDelete = async(id) => {
+    const response = await supabase.from('usersCollection').delete().eq('id', id);
+    if(response){
+      alert("data deleted successfully");
+    }
+  }
+
   return (
     <div>
       <h1>supabase crud operation</h1>
@@ -62,6 +69,19 @@ function App() {
           />
           <button type="submit">submit</button>
         </form>
+
+        <div className='data-container'>
+            {
+              userList.map((user) => <div key={user.id} className='card'>
+                  <p>{user.name}</p>
+                  <p>{user.designation}</p>
+                  <div className='button-container'>
+                    <button onClick={()=>handleItemDelete(user.id)}>Del</button>
+                    <button>Upd</button>
+                  </div>
+              </div>)
+            }
+        </div>
       </div>
     </div>
   )
